@@ -8,6 +8,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+import javax.sql.DataSource;
 
 @SpringBootApplication
 public class PalTrackerApplication {
@@ -16,10 +17,18 @@ public class PalTrackerApplication {
         SpringApplication.run(PalTrackerApplication.class, args);
     }
 
+
+    // commented to update the Bean to use JDBC
+    //    @Bean
+    //    TimeEntryRepository timeEntryRepository() {
+    //        return new InMemoryTimeEntryRepository();
+    //    }
+
     @Bean
-    TimeEntryRepository timeEntryRepository() {
-        return new InMemoryTimeEntryRepository();
+    TimeEntryRepository timeEntryRepository(DataSource ds) {
+        return new JdbcTimeEntryRepository(ds);
     }
+
 
     @Bean
     public ObjectMapper jsonObjectMapper() {
